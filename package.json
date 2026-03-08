@@ -35,7 +35,7 @@
   "ava": {
     "verbose": true,
     "timeout": "3m"
- },
+  },
   "xo": {
     "prettier": true,
     "space": 2,
