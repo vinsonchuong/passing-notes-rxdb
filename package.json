@@ -35,12 +35,13 @@
   "ava": {
     "verbose": true,
     "timeout": "3m"
-  },
+ },
   "xo": {
     "prettier": true,
     "space": 2,
     "semicolon": false,
     "rules": {
+      "complexity": "off",
       "import/no-anonymous-default-export": "off",
       "unicorn/prevent-abbreviations": "off"
     }
