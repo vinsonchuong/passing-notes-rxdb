@@ -1,0 +1,53 @@
+{
+  "name": "passing-notes-rxdb",
+  "version": "0.0.0",
+  "description": "An HTTP replication middleware for RxDB that persists to SQLite",
+  "keywords": [
+    "rxdb",
+    "replication",
+    "sqlite"
+  ],
+  "homepage": "https://github.com/vinsonchuong/passing-notes-rxdb",
+  "bugs": "https://github.com/vinsonchuong/passing-notes-rxdb/issues",
+  "license": "MIT",
+  "author": "Vinson Chuong <vinsonchuong@gmail.com>",
+  "repository": "vinsonchuong/passing-notes-rxdb",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo && ava",
+    "release": "semantic-release"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.0.0"
+  },
+  "peerDependencies": {
+    "passing-notes": "^6.2.0"
+  },
+  "devDependencies": {
+    "ava": "^6.1.3",
+    "ava-patterns": "^3.2.1",
+    "passing-notes": "^6.8.5",
+    "semantic-release": "^24.1.0",
+    "xo": "^0.59.3"
+  },
+  "ava": {
+    "verbose": true,
+    "timeout": "3m"
+  },
+  "xo": {
+    "prettier": true,
+    "space": 2,
+    "semicolon": false,
+    "rules": {
+      "import/no-anonymous-default-export": "off",
+      "unicorn/prevent-abbreviations": "off"
+    }
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
+  "packageManager": "yarn@4.13.0"
+}
