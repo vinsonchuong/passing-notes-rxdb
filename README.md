@@ -9,7 +9,7 @@ An HTTP replication middleware for [RxDB](https://rxdb.info/) that persists to S
 Install by running:
 
 ```sh
-yarn add passing-notes-rxdb
+yarn add passing-notes-rxdb better-sqlite3
 ```
 
 Then compose it with other middleware:
@@ -17,60 +17,64 @@ Then compose it with other middleware:
 ```js
 import {compose} from 'passing-notes'
 import {serveRxdb} from 'passing-notes-rxdb'
+import {Persistence} from 'passing-notes-rxdb/sqlite'
+
+const schemas = {
+  heroes: {
+    schema: {
+      version: 0,
+      primaryKey: 'id',
+      type: 'object',
+      properties: {
+        id: {type: 'string', maxLength: 36},
+        updatedAt: {type: 'integer'},
+        name: {type: 'string'},
+      },
+    },
+  },
+}
+
+const persistence = new Persistence(':memory:', schemas)
 
 export default compose(
-  serveRxdb({
-    dbPath: './data.db',
-    collections: ['heroes', 'items'],
-  }),
+  serveRxdb({persistence, path: '/data'}),
   () => () => ({status: 404}),
 )
 ```
 
-On the client side, use RxDB's HTTP replication plugin pointing at the server:
+On the client:
 
 ```js
-import {replicateRxCollection} from 'rxdb/plugins/replication-http'
+import {createRxDatabase} from 'rxdb'
+import {getRxStorageMemory} from 'rxdb/plugins/storage-memory'
+import {replicateCollection} from 'passing-notes-rxdb/client'
 
-replicateRxCollection({
-  collection: myCollection,
-  replicationIdentifier: 'my-http-replication',
-  pull: {
-    handler: async (lastCheckpoint, batchSize) => {
-      const {id = '', updatedAt = 0} = lastCheckpoint ?? {}
-      const res = await fetch(
-        `/heroes/pull?id=${id}&updatedAt=${updatedAt}&limit=${batchSize}`,
-      )
-      return res.json()
-    },
-    stream$: /* EventSource pointing at /heroes/pullStream */, 
-  },
-  push: {
-    handler: async (rows) => {
-      const res = await fetch('/heroes/push', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(rows),
-      })
-      return res.json()
+const db = await createRxDatabase({
+  name: 'heroes',
+  storage: getRxStorageMemory(),
+})
+
+await db.addCollections({
+  heroes: {
+    schema: {
+      version: 0,
+      primaryKey: 'id',
+      type: 'object',
+      properties: {
+        id: {type: 'string', maxLength: 36},
+        updatedAt: {type: 'integer'},
+        name: {type: 'string'},
+      },
     },
   },
 })
+
+const replicationState = replicateCollection({
+  collection: db.heroes,
+  replicationIdentifier: 'heroes',
+  url: 'http://localhost:8080/data',
+  EventSource,
+})
+
+await replicationState.awaitInitialReplication()
 ```
-
-## API
-
-### `serveRxdb({ dbPath, collections })`
-
-Returns a passing-notes middleware.
-
-- `dbPath` — Path to the SQLite database file. Use `':memory:'` for an in-memory database (useful for tests).
-- `collections` — Array of collection name strings. A SQLite table is created for each on startup.
-
-#### Endpoints
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/:collection/pull` | Pull documents since a checkpoint |
-| `POST` | `/:collection/push` | Push new document states, returns conflicts |
-| `GET` | `/:collection/pullStream` | SSE stream of live updates |

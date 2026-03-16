@@ -13,20 +13,29 @@
   "author": "Vinson Chuong <vinsonchuong@gmail.com>",
   "repository": "vinsonchuong/passing-notes-rxdb",
   "type": "module",
-  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./sqlite": "./lib/persistence/sqlite.js",
+    "./client": "./lib/client.js"
+  },
   "scripts": {
     "test": "xo && ava",
     "release": "semantic-release"
   },
+  "packageManager": "yarn@4.13.0",
   "dependencies": {
-    "better-sqlite3": "^12.6.2"
+    "rxdb": "^16.21.1",
+    "rxjs": "^7.8.2"
   },
   "peerDependencies": {
-    "passing-notes": "^6.2.0"
+    "better-sqlite3": "^12.6.2",
+    "passing-notes": "^6.8.6"
   },
   "devDependencies": {
     "ava": "^7.0.0",
     "ava-patterns": "^3.2.1",
+    "better-sqlite3": "^12.6.2",
+    "eventsource": "^4.1.0",
     "passing-notes": "^6.8.6",
     "semantic-release": "^25.0.3",
     "typescript": "^5.9.3",
@@ -42,14 +51,15 @@
     "semicolon": false,
     "rules": {
       "complexity": "off",
+      "no-await-in-loop": "off",
       "import/no-anonymous-default-export": "off",
-      "unicorn/prevent-abbreviations": "off"
+      "unicorn/prevent-abbreviations": "off",
+      "unicorn/no-process-exit": "off"
     }
   },
   "release": {
     "branches": [
       "main"
     ]
-  },
-  "packageManager": "yarn@4.13.0"
+  }
 }
