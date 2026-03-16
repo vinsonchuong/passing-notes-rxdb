@@ -78,3 +78,25 @@ const replicationState = replicateCollection({
 
 await replicationState.awaitInitialReplication()
 ```
+
+## OPFS Storage (Browser)
+
+Store RxDB data locally in the browser using the [Origin Private File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system) (OPFS). This enables fully offline-capable, persistent RxDB databases in the browser without relying on IndexedDB or any server.
+
+Install by running:
+
+```sh
+yarn add passing-notes-rxdb
+```
+
+Then use it as the storage for an RxDB database:
+
+```js
+import {getRxStorageOPFS} from 'passing-notes-rxdb/opfs'
+import {createRxDatabase} from 'rxdb'
+
+const db = await createRxDatabase({
+  name: 'mydb',
+  storage: getRxStorageOPFS(),
+})
+```
