@@ -15,6 +15,7 @@ yarn add passing-notes-rxdb better-sqlite3
 Then compose it with other middleware:
 
 ```js
+import path from 'node:path'
 import {compose} from 'passing-notes'
 import {serveRxdb} from 'passing-notes-rxdb'
 import {Persistence} from 'passing-notes-rxdb/sqlite'
@@ -30,11 +31,16 @@ const schemas = {
         updatedAt: {type: 'integer'},
         name: {type: 'string'},
       },
+      attachments: {}
     },
   },
 }
 
-const persistence = new Persistence(':memory:', schemas)
+const persistence = new Persistence(
+':memory:',
+  path.resolve('attachments'),
+  schemas
+)
 
 export default compose(
   serveRxdb({persistence, path: '/data'}),
@@ -45,9 +51,12 @@ export default compose(
 On the client:
 
 ```js
-import {createRxDatabase} from 'rxdb'
+import {createRxDatabase, addRxPlugin} from 'rxdb'
+import {RxDBAttachmentsPlugin} from 'rxdb/plugins/attachments'
 import {getRxStorageMemory} from 'rxdb/plugins/storage-memory'
 import {replicateCollection} from 'passing-notes-rxdb/client'
+
+addRxPlugin(RxDBAttachmentsPlugin)
 
 const db = await createRxDatabase({
   name: 'heroes',
@@ -65,6 +74,7 @@ await db.addCollections({
         updatedAt: {type: 'integer'},
         name: {type: 'string'},
       },
+      attachments: {}
     },
   },
 })
