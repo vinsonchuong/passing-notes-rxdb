@@ -53,7 +53,7 @@ export function serveRxdb({persistence, path = ''}) {
       const updatedAt = Number(url.searchParams.get('updatedAt') ?? 0)
       const limit = Number(url.searchParams.get('limit') ?? 20)
 
-      const {documents, checkpoint} = persistence.pull(collectionName, {
+      const {documents, checkpoint} = await persistence.pull(collectionName, {
         updatedAt,
         id,
         pageSize: limit,
@@ -68,7 +68,7 @@ export function serveRxdb({persistence, path = ''}) {
 
     if (request.method === 'POST') {
       const items = JSON.parse(request.body)
-      const conflicts = persistence.push(collectionName, items)
+      const conflicts = await persistence.push(collectionName, items)
 
       return {
         status: 200,

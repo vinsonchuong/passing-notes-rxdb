@@ -5,6 +5,7 @@ import {getRxStorageMemory} from 'rxdb/plugins/storage-memory'
 import {EventSource} from 'eventsource'
 import {Persistence} from './lib/persistence/sqlite.js'
 import {replicateCollection} from './lib/client.js'
+import {useTmpDir} from './test-lib/tmp.js'
 import {serveRxdb} from './index.js'
 
 const schemas = {
@@ -23,7 +24,8 @@ const schemas = {
 }
 
 test('push and pull documents', async (t) => {
-  const persistence = new Persistence(':memory:', schemas)
+  const tmpDir = useTmpDir(t)
+  const persistence = new Persistence(':memory:', tmpDir, schemas)
   t.teardown(() => {
     persistence.dispose()
   })
@@ -70,7 +72,8 @@ test('push and pull documents', async (t) => {
 })
 
 test('conflict detection on push', async (t) => {
-  const persistence = new Persistence(':memory:', schemas)
+  const tmpDir = useTmpDir(t)
+  const persistence = new Persistence(':memory:', tmpDir, schemas)
   t.teardown(() => {
     persistence.dispose()
   })
@@ -124,7 +127,8 @@ test('conflict detection on push', async (t) => {
 })
 
 test('pullStream receives live updates via SSE', async (t) => {
-  const persistence = new Persistence(':memory:', schemas)
+  const tmpDir = useTmpDir(t)
+  const persistence = new Persistence(':memory:', tmpDir, schemas)
   t.teardown(() => {
     persistence.dispose()
   })
@@ -175,7 +179,8 @@ test('pullStream receives live updates via SSE', async (t) => {
 })
 
 test('providing a base URL path', async (t) => {
-  const persistence = new Persistence(':memory:', schemas)
+  const tmpDir = useTmpDir(t)
+  const persistence = new Persistence(':memory:', tmpDir, schemas)
   t.teardown(() => {
     persistence.dispose()
   })
@@ -222,7 +227,8 @@ test('providing a base URL path', async (t) => {
 })
 
 test('syncing with real clients', async (t) => {
-  const persistence = new Persistence(':memory:', schemas)
+  const tmpDir = useTmpDir(t)
+  const persistence = new Persistence(':memory:', tmpDir, schemas)
   t.teardown(() => {
     persistence.dispose()
   })
