@@ -4,6 +4,7 @@
 **/*.test.js
 **/test.js
 test/
+test-lib/
 
 .yarn/
 .yarnrc.yml
