@@ -16,7 +16,8 @@
   "exports": {
     ".": "./index.js",
     "./sqlite": "./lib/persistence/sqlite.js",
-    "./client": "./lib/client.js"
+    "./client": "./lib/client.js",
+    "./opfs": "./lib/storage/opfs.js"
   },
   "scripts": {
     "test": "xo && ava",
