@@ -2612,14 +2612,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^12.6.2":
-  version: 12.6.2
-  resolution: "better-sqlite3@npm:12.6.2"
+"better-sqlite3@npm:12.9.0":
+  version: 12.9.0
+  resolution: "better-sqlite3@npm:12.9.0"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: 10c0/a58fb3f7a7f5469ba0b8de0855aa67396ff34f951a6975746e4b21987f530be6a34427d1d4bd5958cf48c67ed7ba1df038ae163d2ee9d944237f6b8112f6640d
+  checksum: 10c0/69ee0d908fa6a5c8643872aa664686ed02476e88cb654fe37f0fef5845081430d4280c82f5d370e169c2abe7a14a85d9bc718ea720058abf4f7cd9a8dbe227f0
   languageName: node
   linkType: hard
 
@@ -7705,7 +7705,7 @@ __metadata:
     "@sindresorhus/slugify": "npm:^3.0.0"
     ava: "npm:^7.0.0"
     ava-patterns: "npm:^3.2.1"
-    better-sqlite3: "npm:^12.6.2"
+    better-sqlite3: "npm:12.9.0"
     eventsource: "npm:^4.1.0"
     lodash-es: "npm:^4.18.1"
     passing-notes: "npm:^6.8.6"
@@ -7715,7 +7715,7 @@ __metadata:
     typescript: "npm:^5.9.3"
     xo: "npm:^1.2.3"
   peerDependencies:
-    better-sqlite3: ^12.6.2
+    better-sqlite3: ^12.9.0
     passing-notes: ^6.8.6
   languageName: unknown
   linkType: soft
